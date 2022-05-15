@@ -1,0 +1,29 @@
+version: '3.8'
+
+networks:
+  starnik_net:
+    driver: bridge
+
+volumes:
+  starnik_postgres_data:
+
+services:
+  starnik_postgres:
+    container_name: starnik_postgres
+    networks:
+      - starnik_net
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=starnik
+      - POSTGRES_PASSWORD=starnik
+      - POSTGRES_DB=starnik
+    logging:
+      options:
+        max-size: 15m
+        max-file: "5"      
+    volumes:
+      - starnik_postgres_data:/var/lib/postgresql/data
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
