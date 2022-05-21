@@ -3,7 +3,8 @@ defmodule Starnik.Application do
 
   def start(_type, _args) do
     children = [
-      Starnik.HTTP
+      Starnik.HTTP,
+      Starnik.Repo
     ]
 
     opts = [strategy: :one_for_one, name: Starnik.Supervisor]

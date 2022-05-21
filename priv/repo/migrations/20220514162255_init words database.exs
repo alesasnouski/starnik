@@ -14,5 +14,9 @@ defmodule :"Elixir.Starnik.Repo.Migrations.Init words database" do
     execute """
       CREATE INDEX words_inserted_at_index on words using brin(word);
     """
+
+    execute """
+      ALTER TABLE words ALTER COLUMN inserted_at SET DEFAULT NOW();
+    """
   end
 end

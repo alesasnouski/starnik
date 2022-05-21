@@ -1,29 +1,47 @@
-defmodule Starnik.Schema do
-  use Absinthe.Schema
+defmodule Starnik.Word do
+  @moduledoc false
 
-  import_types(Absinthe.Type.Custom)
-  import_types(Starnik.Schema.WordFields)
+  use Ecto.Schema
+  import Ecto.Changeset
+  import Ecto.Query
 
-  def dataloader do
-    source = Dataloader.Ecto.new(Repo)
+  @derive Jason.Encoder
 
-    Dataloader.new()
-    |> Dataloader.add_source(Repo, source)
-  end
+  schema "words" do
+    field(:word, :string)
+    timestamps(type: :utc_datetime, updated_at: false)
 
-  def context(ctx) do
-    Map.put(ctx, :loader, dataloader())
-  end
+    def starts_with(query \\ __MODULE__, val) do
+      prefix = "#{val}%"
+      from(q in query, where: like(q.word, ^prefix))
+    end
 
-  def plugins do
-    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
-  end
+    def by_containing_letters(query \\ __MODULE__, val) do
+      String.graphemes(val)
+      |> Enum.reduce(query, fn v, acc ->
+        from(q in query, where: fragment("? ~ ?", q.word, ^v))
+      end)
+    end
 
-  def middleware(middleware, _flds, _objs) do
-    middleware
-  end
+    def by_excluding_letters(query \\ __MODULE__, val) do
+      String.graphemes(val)
+      |> Enum.reduce(query, fn v, acc ->
+        from(q in query, where: fragment("? !~ ?", q.word, ^v))
+      end)
+    end
 
-  query do
-    import_fields(:word_queries)
+    def ends_with(query \\ __MODULE__, val) do
+      suffix = "%#{val}"
+      from(q in query, where: like(q.word, ^suffix))
+    end
+
+    def like(query \\ __MODULE__, val) do
+      real_val = "%#{val}%"
+      from(q in query, where: like(q.word, ^real_val))
+    end
+
+    def by_length(query \\ __MODULE__, val) do
+      from(q in query, where: fragment("length(?)", q.word) == ^val)
+    end
   end
 end
