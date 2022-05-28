@@ -9,6 +9,7 @@ defmodule Starnik.Word do
 
   schema "words" do
     field(:word, :string)
+    field(:word_reverse, :string)
     timestamps(type: :utc_datetime, updated_at: false)
 
     def starts_with(query \\ __MODULE__, val) do
@@ -31,8 +32,8 @@ defmodule Starnik.Word do
     end
 
     def ends_with(query \\ __MODULE__, val) do
-      suffix = "%#{val}"
-      from(q in query, where: like(q.word, ^suffix))
+      suffix = "#{val}%"
+      from(q in query, where: like(q.word_reverse, ^suffix))
     end
 
     def like(query \\ __MODULE__, val) do

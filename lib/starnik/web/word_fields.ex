@@ -7,6 +7,7 @@ defmodule Starnik.Schema.WordFields do
   object :word do
     field(:id, non_null(:id))
     field(:word, non_null(:string))
+    field(:word_reverse, non_null(:string))
     field(:inserted_at, :datetime)
   end
 
