@@ -14,13 +14,20 @@
   kiex update\
   kiex install 1.13.4
 
+### Elixir MacOS setup:
+\curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s\
+test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"\
+kiex install 1.13.4\
+kiex use 1.13.4
+
+
 ### Start containers:
-  cd local_env && docker-compose up -d
+  cd local_env && docker-compose up --build -d
 
 ### Start application:
-  mix deps get 
-  mix ecto.migrate
-  mix run priv/repo/seeds/seeds.exs  # copy txt file into requested path if needed
+  mix deps get \
+  mix ecto.migrate \
+  mix run priv/repo/seeds/seeds.exs  # copy txt file into requested path if needed \
   iex -S mix
   
   Proceed to http://localhost:8000/graphiql to execute query:
@@ -47,5 +54,10 @@ Variables:
 
 ```
 
-The same query can be sent to API /api endpoint like\
-http://localhost:8000/api?query=query(.........
+### Start Front-End:
+Start dev server: \
+cd assets && npm run dev \
+Proceed to http://localhost:3000
+
+Build assets: \
+npm run build

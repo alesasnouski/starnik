@@ -1,0 +1,64 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react-hooks"
+  ],
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "linebreak-style": "off",
+    "no-use-before-define": "off",
+    "no-param-reassign": "off",
+    "no-unused-vars": "warn",
+    "no-trailing-spaces": "warn",
+    "quote-props": "off",
+    "semi": ["error", "never"],
+    "comma-dangle": "off",
+    "import/prefer-default-export": "off",
+    "arrow-parens": "off",
+    "arrow-body-style": "off",
+    "react/jsx-filename-extension": "off",
+    "object-curly-newline": "off",
+    "prefer-promise-reject-errors": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "react/jsx-no-bind": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "max-len": ["error", { "code": 140 }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      },
+      "eslint-import-resolver-custom-alias": {
+        "alias": {
+          "components": "./src/components/",
+          "utils": "./src/utils/",
+          "query": "./src/query/"
+        },
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

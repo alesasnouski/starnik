@@ -1,0 +1,23 @@
+.search-bar {
+  margin: 1em auto;
+  max-width: 600px;
+  background-color:white;
+  display: flex;
+  border-radius: 0.25em;
+  font-family: inherit;
+
+  .search-bar-input {
+    padding: 0.25em 0.5em;
+  }
+
+  .search-bar-submit {
+    background-color: lightgreen;
+    border-radius: 0 0.25em 0.25em 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .search-bar {
+    max-width: 80%;
+  }
+}
