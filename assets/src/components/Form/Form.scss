@@ -1,37 +1,23 @@
 .form {
   margin: 2em auto;
-  padding: 1em 0;
-  max-width: 600px;
+  padding: 0.5em 0;
+  max-width: 500px;
   background-color: white;
   border-radius: 0.25em;
 
   .input-row {
     display: flex;
     justify-content: space-evenly;
-
-    .input-filed {
-      margin: 0.5em 0;
-      min-width: 40%;
-      border-radius: 0.25em;
-      border-color: #c0c0c0;
-      height: 100%;
-
-      .MuiFormHelperText-root {
-        color: #e76262;
-      }
-
-      & .MuiOutlinedInput-notchedOutline {
-        border-width: 1px;
-      }
-    }
   }
 
   .form-submit {
-    margin: 1em 0 0.5em 0;
+    margin: 0.5em 0 0.25em 0;
     background-color: lightgreen;
+    color: #5b5b5b;
     width: 40%;
     &:hover {
-      background-color: #1976d2;
+      background-color: lightgreen;
+      opacity: 0.8;
     }
   }
 }
@@ -42,10 +28,6 @@
 
     .input-row {
       display: block;
-
-      .input-filed {
-        width: 75%;
-      }
     }
   }
 }

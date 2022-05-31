@@ -1,37 +1,53 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import InputBase from '@mui/material/InputBase'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
+import { searchValidationPattern, validationRegs } from 'utils/validation'
 import { debounce } from 'lodash'
 import './SearchBar.scss'
 
-function SearchBar({ onSubmit, setSearchInput }) {
-  const onChange = (e) => {
-    setSearchInput(e.target.value)
+function SearchBar() {
+  const [searchInput, setSearchInput] = useState('')
+  const [error, setError] = useState(false)
+
+  const validateSearchInput = (value) => {
+    if (!value) return false
+    const actualSpaces = value.length - value.replace(/\s/g, '').length
+    return actualSpaces > searchValidationPattern.allowedSpaces || !validationRegs.string.test(value)
   }
 
-  const debouncedSubmit = debounce(onSubmit, 750)
+  const onChange = (e) => {
+    const { value } = e.target
+    setError(validateSearchInput(value))
+    setSearchInput(value)
+  }
+
+  const onSearchSubmit = () => {
+    if (searchInput && !error) {
+      console.log('submit')
+    }
+  }
+
+  const debouncedSubmit = debounce(onSearchSubmit, 750)
 
   return (
     <div className="search-bar">
       <InputBase
-        className="search-bar-input"
-        placeholder="Search "
+        className={`search-bar-input ${error ? 'error' : ''}`}
+        placeholder="Пошук "
         fullWidth
         onChange={onChange}
-        error
       />
-      <IconButton type="submit" aria-label="search" className="search-bar-submit" onClick={debouncedSubmit}>
+      <IconButton
+        type="submit"
+        aria-label="Лiтары - скласцi слова"
+        className="search-bar-submit"
+        onClick={debouncedSubmit}
+      >
         <SearchIcon />
       </IconButton>
     </div>
   )
-}
-
-SearchBar.propTypes = {
-  onSubmit: PropTypes.func,
-  setSearchInput: PropTypes.func
 }
 
 export default SearchBar

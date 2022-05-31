@@ -1,6 +1,6 @@
 .search-bar {
-  margin: 1em auto;
-  max-width: 600px;
+  margin: 0.5em auto;
+  max-width: 500px;
   background-color:white;
   display: flex;
   border-radius: 0.25em;
@@ -8,11 +8,20 @@
 
   .search-bar-input {
     padding: 0.25em 0.5em;
+    &.error {
+      input {
+        outline: solid 2px #e76262;
+      }
+    }
   }
 
   .search-bar-submit {
     background-color: lightgreen;
     border-radius: 0 0.25em 0.25em 0;
+    &:hover {
+      background-color: lightgreen;
+      opacity: 0.8;
+    }
   }
 }
 

@@ -1,0 +1,51 @@
+.input-filed-wrapper {
+  margin: 0.5em 0;
+  width: 45%;
+  display: inline-block;
+  position: relative;
+
+  .tooltip {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    padding: 2px;
+    border-radius: 50%;
+
+    .tooltip-icon {
+      font-size: 15px;
+      border-radius: 50%;
+      color: #5b5b5b;
+      padding: 2px;
+      border: solid 1px lightgray;
+    }
+  }
+
+  .input-filed {
+    border-radius: 0.25em;
+    border-color: #c0c0c0;
+    width: 100%;
+
+    p {
+      margin: 0;
+    }
+
+    .MuiFormHelperText-root {
+      color: #e76262;
+    }
+
+    .MuiOutlinedInput-input {
+      margin-right: 20px;
+    }
+
+    & .MuiOutlinedInput-notchedOutline {
+      border-width: 1px;
+    }
+  }
+
+}
+
+@media only screen and (max-width: 768px) {
+  .input-filed-wrapper {
+    width: 75%;
+  }
+}
