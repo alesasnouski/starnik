@@ -33,23 +33,26 @@ kiex use 1.13.4
   Proceed to http://localhost:8000/graphiql to execute query:
 
 ```
-query($startsWith:String, $limit:Int, $endsWith:String, $length:Int, $containsLetters:String, $excludesLetters:String, $like:String){
+query($startsWith:String, $limit:Int, $endsWith:String, $length:Int, $containsLetters:String, 
+  $excludesLetters:String, $like:String, $order:String){
   words(startsWith:$startsWith, limit:$limit, endsWith:$endsWith,
     length:$length, containsLetters:$containsLetters, excludesLetters:$excludesLetters, like:$like) {
     word,
-    insertedAt,
+    id
+  },
+  words_reversed: words(startsWith:$startsWith, limit:$limit, endsWith:$endsWith,
+    length:$length, containsLetters:$containsLetters, excludesLetters:$excludesLetters, like:$like, order:$order) {
+    word,
     id
   }
 }
 
-Variables:
 {
-  "containsLetters": "б",
-  "excludesLetters": "де",
   "length": 7,
-  "like": "_юби",
   "limit": 100,
-  "startsWith": "л"
+  "startsWith": "оба",
+  "order": "word_reverse",
+  "excludesLetters": "гмжюя"
 }
 
 ```

@@ -1,12 +1,13 @@
 defmodule Resolvers.Words do
   import Ecto.Query
 
-  @limit_default 200
+  @limit_default 500
+  @order_default [asc: :word]
   @limit_max 2000
 
   def list_words(args, %{context: _context}) do
     schema = Starnik.Word
-    base_query = from q in schema, limit: @limit_default
+    base_query = from(q in schema, limit: @limit_default)
 
     query =
       Enum.reduce(args, base_query, fn
@@ -28,6 +29,9 @@ defmodule Resolvers.Words do
         {:like, val}, query ->
           schema.like(query, val)
 
+        {:order, val}, query ->
+          schema.order_by(query, val)
+
         {:limit, limit}, query ->
           limited =
             case limit do
@@ -42,10 +46,15 @@ defmodule Resolvers.Words do
           query
       end)
 
-    data = from(q in query,
-      order_by: [:word]
-    )
-    |> Starnik.Repo.all()
+    ordered_query = case Map.get(query, :order_by) do
+      nil -> from(q in query, order_by: ^@order_default)
+      _ -> query
+    end
+
+    data =
+      from(q in ordered_query)
+      |> Starnik.Repo.all()
+
     {:ok, data}
   end
 end

@@ -20,6 +20,7 @@ defmodule Starnik.Schema.WordFields do
       arg(:ends_with, :string)
       arg(:contains_letters, :string)
       arg(:excludes_letters, :string)
+      arg(:order, :string)
       arg(:like, :string)
       resolve(&Resolvers.Words.list_words/2)
     end

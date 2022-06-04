@@ -2,10 +2,11 @@ defmodule Starnik.Word do
   @moduledoc false
 
   use Ecto.Schema
-  import Ecto.Changeset
   import Ecto.Query
 
   @derive Jason.Encoder
+
+  @sort_order_default [asc: :word]
 
   schema "words" do
     field(:word, :string)
@@ -20,15 +21,37 @@ defmodule Starnik.Word do
     def by_containing_letters(query \\ __MODULE__, val) do
       String.graphemes(val)
       |> Enum.reduce(query, fn v, acc ->
-        from(q in query, where: fragment("? ~ ?", q.word, ^v))
+        from(q in acc, where: fragment("? ~ ?", q.word, ^v))
       end)
     end
 
     def by_excluding_letters(query \\ __MODULE__, val) do
       String.graphemes(val)
       |> Enum.reduce(query, fn v, acc ->
-        from(q in query, where: fragment("? !~ ?", q.word, ^v))
+        from(q in acc, where: fragment("? !~ ?", q.word, ^v))
       end)
+    end
+
+    def order_by(query \\ __MODULE__, val) do
+      sort_order = get_sort_order_by(val)
+      from(q in query, order_by: ^sort_order)
+    end
+
+    defp get_sort_order_by(val) do
+      split_val =
+        val
+        |> String.trim()
+        |> String.split(" ")
+
+      case split_val do
+        ["word", "desc"] -> [desc: :word]
+        ["word", "asc"] -> [asc: :word]
+        ["word"] -> [asc: :word]
+        ["word_reverse", "desc"] -> [desc: :word_reverse]
+        ["word_reverse", "asc"] -> [asc: :word_reverse]
+        ["word_reverse"] -> [asc: :word_reverse]
+        _ -> @sort_order_default
+      end
     end
 
     def ends_with(query \\ __MODULE__, val) do
