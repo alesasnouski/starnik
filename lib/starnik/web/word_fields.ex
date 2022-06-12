@@ -33,5 +33,11 @@ defmodule Starnik.Schema.WordFields do
       middleware(Authenticate)
       resolve(&Resolvers.Words.create_words/2)
     end
+
+    field :remove_word, :word do
+      arg(:word, :string)
+      middleware(Authenticate)
+      resolve(&Resolvers.Words.remove_word/2)
+    end
   end
 end

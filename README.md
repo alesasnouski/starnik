@@ -63,6 +63,14 @@ mutation($words:[String]!) {
   }
 }
 
+Mutation for word removal:
+
+mutation($word:String!) {
+  removeWord(word: $word) {
+    word
+  }
+}
+
 ```
 
 ### Start Front-End:

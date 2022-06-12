@@ -10,6 +10,17 @@ defmodule Resolvers.Words do
   @min_word_length 2
   @max_word_length 30
 
+  def remove_word(%{word: word}, %{context: _context}) do
+    case Starnik.Repo.get_by(Starnik.Word, word: word) do
+      nil ->
+        {:ok, nil}
+
+      w ->
+        Starnik.Repo.delete(w)
+        {:ok, w}
+    end
+  end
+
   def create_words(%{words: words}, %{context: _context}) do
     slices =
       words
