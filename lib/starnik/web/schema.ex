@@ -26,4 +26,8 @@ defmodule Starnik.Schema do
   query do
     import_fields(:word_queries)
   end
+
+  mutation do
+    import_fields(:word_mutations)
+  end
 end

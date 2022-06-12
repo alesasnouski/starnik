@@ -55,6 +55,14 @@ query($startsWith:String, $limit:Int, $endsWith:String, $length:Int, $containsLe
   "excludesLetters": "гмжюя"
 }
 
+Mutation for inserting words:
+
+mutation($words:[String]!) {
+  createWords(words: $words) {
+    word
+  }
+}
+
 ```
 
 ### Start Front-End:

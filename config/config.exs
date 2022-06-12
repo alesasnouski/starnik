@@ -8,6 +8,8 @@ config :starnik, Starnik.Repo,
 
 config :starnik, ecto_repos: [Starnik.Repo]
 
+config :starnik, Plugs.Graphql.Context, admin_auth_token: ""
+
 import_config "#{config_env()}.exs"
 
 if File.exists?("config/#{config_env()}.secret.exs"),

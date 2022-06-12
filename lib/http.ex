@@ -31,6 +31,7 @@ end
 defmodule Starnik.HTTP do
   @moduledoc false
   use Plug.Builder
+  plug(Plugs.Graphql.Context, [])
   plug(Starnik.HTTP.API, [])
 
   def start_link do

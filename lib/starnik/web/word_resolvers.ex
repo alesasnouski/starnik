@@ -1,9 +1,49 @@
 defmodule Resolvers.Words do
   import Ecto.Query
 
+  require Logger
+
   @limit_default 500
   @order_default [asc: :word]
   @limit_max 2000
+  @insert_batch_size 100
+  @min_word_length 2
+  @max_word_length 30
+
+  def create_words(%{words: words}, %{context: _context}) do
+    slices =
+      words
+      |> Enum.map(&String.trim/1)
+      |> Enum.map(&String.downcase/1)
+      |> Enum.filter(fn word ->
+        String.length(word) > @min_word_length && String.length(word) < @max_word_length
+      end)
+      |> Enum.chunk_every(@insert_batch_size)
+
+    slices
+    |> Enum.map(fn words ->
+      slice =
+        Enum.map(words, fn word ->
+          %{
+            word: word,
+            word_reverse: String.reverse(word)
+          }
+        end)
+
+      {inserted, nil} = Starnik.Repo.insert_all(Starnik.Word, slice, on_conflict: :nothing)
+      Logger.info("Inserted #{inserted} new words.")
+    end)
+
+    words =
+      slices
+      |> Enum.map(fn words ->
+        from(q in Starnik.Word, where: q.word in ^words)
+        |> Starnik.Repo.all()
+      end)
+      |> List.flatten()
+
+    {:ok, words}
+  end
 
   def list_words(args, %{context: _context}) do
     schema = Starnik.Word
@@ -46,10 +86,11 @@ defmodule Resolvers.Words do
           query
       end)
 
-    ordered_query = case Map.get(query, :order_by) do
-      nil -> from(q in query, order_by: ^@order_default)
-      _ -> query
-    end
+    ordered_query =
+      case Map.get(query, :order_by) do
+        nil -> from(q in query, order_by: ^@order_default)
+        _ -> query
+      end
 
     data =
       from(q in ordered_query)

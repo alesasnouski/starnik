@@ -2,6 +2,7 @@ defmodule Starnik.Schema.WordFields do
   @moduledoc false
 
   use Absinthe.Schema.Notation
+  alias Starnik.Middlewares.Authenticate
 
   @desc "A word"
   object :word do
@@ -23,6 +24,14 @@ defmodule Starnik.Schema.WordFields do
       arg(:order, :string)
       arg(:like, :string)
       resolve(&Resolvers.Words.list_words/2)
+    end
+  end
+
+  object :word_mutations do
+    field :create_words, list_of(:word) do
+      arg(:words, list_of(:string))
+      middleware(Authenticate)
+      resolve(&Resolvers.Words.create_words/2)
     end
   end
 end
